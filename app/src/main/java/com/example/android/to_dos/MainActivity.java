@@ -82,10 +82,12 @@ public class MainActivity extends AppCompatActivity
         String date = cursor.getString(cursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_DATE_TIME));
         String place = cursor.getString(cursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_PLACE));
         String explanation = cursor.getString(cursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_EXPLANATION));
+        long id = cursor.getLong(cursor.getColumnIndex(ToDoContract.ToDoEntry._ID));
         detailIntent.putExtra(ToDoContract.ToDoEntry.COLUMN_TITLE, title);
         detailIntent.putExtra(ToDoContract.ToDoEntry.COLUMN_EXPLANATION, explanation);
         detailIntent.putExtra(ToDoContract.ToDoEntry.COLUMN_DATE_TIME, date);
         detailIntent.putExtra(ToDoContract.ToDoEntry.COLUMN_PLACE, place);
+        detailIntent.putExtra(ToDoContract.ToDoEntry._ID, id);
         startActivity(detailIntent);
     }
 }
