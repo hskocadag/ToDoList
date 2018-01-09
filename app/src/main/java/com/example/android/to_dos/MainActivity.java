@@ -3,6 +3,7 @@ package com.example.android.to_dos;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,16 +40,27 @@ public class MainActivity extends AppCompatActivity
 
         mToDoAdapter = new ToDoAdapter(this, getAllToDos());
         mToDoList.setAdapter(mToDoAdapter);
+
+        FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.fab_insert_todo_main);
+
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create a new intent to start an AddTaskActivity
+                Intent addTaskIntent = new Intent(MainActivity.this, AddToDoActivity.class);
+                startActivity(addTaskIntent);
+            }
+        });
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
         return true;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.main_menu_add_todo) {
@@ -56,7 +68,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(addTodoIntent);
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     private Cursor getAllToDos() {
         return mDb.query(

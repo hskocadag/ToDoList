@@ -2,11 +2,13 @@ package com.example.android.to_dos;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +23,6 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mDateDetail;
     private TextView mPlaceDetail;
     private long mToDoID;
-    private SQLiteDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,50 +36,55 @@ public class DetailActivity extends AppCompatActivity {
         mToDoID = -1;
         if(starterIntent != null)
         {
-            String title = starterIntent.getStringExtra(ToDoContract.ToDoEntry.COLUMN_TITLE);
-            String date = starterIntent.getStringExtra(ToDoContract.ToDoEntry.COLUMN_DATE_TIME);
-            String place = starterIntent.getStringExtra(ToDoContract.ToDoEntry.COLUMN_PLACE);
-            String explanation = starterIntent.getStringExtra(ToDoContract.ToDoEntry.COLUMN_EXPLANATION);
-            mToDoID = starterIntent.getLongExtra(ToDoContract.ToDoEntry._ID, -1);
-            mTitleDetail.setText(title);
-            mExplanationDetail.setText(explanation);
-            mDateDetail.setText(date);
-            mPlaceDetail.setText(place);
-            ToDoDbHelper helper = new ToDoDbHelper(this);
-            mDb = helper.getWritableDatabase();
+            setTextViews(starterIntent);
         }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.detail_menu, menu);
-        return true;
-    }
+        FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.fab_delete_todo);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if(itemId == R.id.detail_menu_delete_todo)
-        {
-            boolean deleted = deleteToDoItemFromDB();
-            if(deleted) {
-                Toast.makeText(this, "The " + mTitleDetail.getText() + " To-Do is deleted from list", Toast.LENGTH_LONG).show();
-                finish();
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Create a new intent to start an AddTaskActivity
+                onDeleteButtonClicked();
             }
-            else
-                Toast.makeText(this, "Could not delete. Try again later!", Toast.LENGTH_LONG).show();
+        });
+    }
+
+    private void setTextViews(Intent starterIntent)
+    {
+        String title = starterIntent.getStringExtra(ToDoContract.ToDoEntry.COLUMN_TITLE);
+        String date = starterIntent.getStringExtra(ToDoContract.ToDoEntry.COLUMN_DATE_TIME);
+        String place = starterIntent.getStringExtra(ToDoContract.ToDoEntry.COLUMN_PLACE);
+        String explanation = starterIntent.getStringExtra(ToDoContract.ToDoEntry.COLUMN_EXPLANATION);
+        mToDoID = starterIntent.getLongExtra(ToDoContract.ToDoEntry._ID, -1);
+        mTitleDetail.setText(title);
+        mExplanationDetail.setText(explanation);
+        mDateDetail.setText(date);
+        mPlaceDetail.setText(place);
+    }
+
+    private void onDeleteButtonClicked()
+    {
+        boolean deleted = deleteToDoItemFromDB();
+        if(deleted) {
+            Toast.makeText(this, "The " + mTitleDetail.getText() + " To-Do is deleted from list", Toast.LENGTH_LONG).show();
+            finish();
         }
-        return super.onOptionsItemSelected(item);
+        else
+            Toast.makeText(this, "Could not delete. Try again later!", Toast.LENGTH_LONG).show();
     }
 
     private boolean deleteToDoItemFromDB()
     {
+        ToDoDbHelper helper = new ToDoDbHelper(this);
+        SQLiteDatabase mDb = helper.getWritableDatabase();
         if(mToDoID == -1)
             return false;
-        return mDb.delete(ToDoContract.ToDoEntry.TABLE_NAME,
+        boolean success = mDb.delete(ToDoContract.ToDoEntry.TABLE_NAME,
                 ToDoContract.ToDoEntry._ID + "=" + mToDoID,
                 null) > 0;
+        mDb.close();
+        return success;
     }
 
 }

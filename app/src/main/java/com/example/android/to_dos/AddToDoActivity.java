@@ -37,17 +37,8 @@ public class AddToDoActivity extends AppCompatActivity {
                 String dateTime = mDateTime.getText().toString();
                 String place = mPlace.getText().toString();
                 addToDoToDatabase(title, explanation, dateTime, place);
-                cleanEditTextFields();
             }
         });
-    }
-
-    private void cleanEditTextFields()
-    {
-        mExplanation.setText("");
-        mTitle.setText("");
-        mDateTime.setText("");
-        mPlace.setText("");
     }
 
     private void handleClick(String title, String explanation, String dateTime, String place) {

@@ -1,42 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_height="wrap_content"
+<FrameLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <TextView
-        android:id="@+id/tv_title_detail"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:text="TextView" />
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/tv_explanation_detail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_below="@+id/tv_title_detail"
-        />
+        <TextView
+            android:id="@+id/tv_title_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="TextView" />
 
-    <TextView
-        android:id="@+id/tv_date_time_detail"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_below="@+id/tv_explanation_detail"
-        />
+        <TextView
+            android:id="@+id/tv_explanation_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="TextView"
+            android:layout_below="@+id/tv_title_detail"
+            />
 
-    <TextView
-        android:id="@+id/tv_place_detail"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_toRightOf="@+id/tv_date_time_detail"
-        android:layout_below="@+id/tv_explanation_detail"
-        />
+        <TextView
+            android:id="@+id/tv_date_time_detail"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:paddingRight="5dp"
+            android:textSize="20dp"
+            android:layout_below="@+id/tv_explanation_detail"
+            />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_place_detail"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_alignParentRight="true"
+            android:textSize="20dp"
+            android:layout_toRightOf="@+id/tv_date_time_detail"
+            android:layout_below="@+id/tv_explanation_detail"
+            />
+
+    </RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_delete_todo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:backgroundTint="#4863A0"
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        android:tint="@android:color/white"/>
+</FrameLayout>
