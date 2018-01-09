@@ -62,13 +62,13 @@ public class DetailActivity extends AppCompatActivity {
         if(itemId == R.id.detail_menu_delete_todo)
         {
             boolean deleted = deleteToDoItemFromDB();
-            if(deleted)
+            if(deleted) {
                 Toast.makeText(this, "The " + mTitleDetail.getText() + " To-Do is deleted from list", Toast.LENGTH_LONG).show();
+                finish();
+            }
             else
                 Toast.makeText(this, "Could not delete. Try again later!", Toast.LENGTH_LONG).show();
         }
-        //Intent mainActivityIntent = new Intent(this, MainActivity.class);
-        //startActivity(mainActivityIntent);
         return super.onOptionsItemSelected(item);
     }
 
@@ -76,7 +76,6 @@ public class DetailActivity extends AppCompatActivity {
     {
         if(mToDoID == -1)
             return false;
-        Toast.makeText(this, ToDoContract.ToDoEntry._ID + " " + mToDoID, Toast.LENGTH_LONG).show();
         return mDb.delete(ToDoContract.ToDoEntry.TABLE_NAME,
                 ToDoContract.ToDoEntry._ID + "=" + mToDoID,
                 null) > 0;

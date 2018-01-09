@@ -18,7 +18,7 @@ import com.example.android.to_dos.data.ToDoContract;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder>{
 
     final private ListItemClickListener mlistItemClickListener;
-    final private Cursor mCursor;
+    private Cursor mCursor;
 
     public ToDoAdapter(ListItemClickListener listItemClickListener, Cursor cursor)
     {
@@ -49,6 +49,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             int adapterPosition = getAdapterPosition();
             mlistItemClickListener.onListItemClick(adapterPosition);
         }
+    }
+
+    public void updateCursor(Cursor cursor)
+    {
+        mCursor = cursor;
+        notifyDataSetChanged();
     }
 
     public ToDoViewHolder onCreateViewHolder (ViewGroup viewGroup, int viewType)

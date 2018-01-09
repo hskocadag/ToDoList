@@ -70,6 +70,7 @@ public class AddToDoActivity extends AppCompatActivity {
         cv.put(ToDoContract.ToDoEntry.COLUMN_PLACE, place);
         database.insert(ToDoContract.ToDoEntry.TABLE_NAME, null, cv);
         database.close();
+        finish();
     }
 
 }

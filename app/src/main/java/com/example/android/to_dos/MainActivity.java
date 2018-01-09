@@ -71,6 +71,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mToDoAdapter.updateCursor(getAllToDos());
+    }
+
+    @Override
     public void onListItemClick(int clickedItemId) {
         Cursor cursor = mDb.query(ToDoContract.ToDoEntry.TABLE_NAME, null, null, null, null,null,null);
         if(cursor.getCount() >= clickedItemId)
