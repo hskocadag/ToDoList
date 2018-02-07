@@ -1,5 +1,6 @@
 package com.example.android.to_dos;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,21 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.android.to_dos.data.ToDoContract;
 import com.example.android.to_dos.data.ToDoDbHelper;
 
 public class MainActivity extends AppCompatActivity
-    implements ToDoAdapter.ListItemClickListener
+    implements ToDoAdapter.ListItemClickListener, ToDoAdapter.ListItemCheckBoxClickListener
 {
-    private SQLiteDatabase mDb;
+    private SQLiteDatabase mReadableDb;
+    private SQLiteDatabase mWritableDb;
     private RecyclerView mToDoList;
     private ToDoAdapter mToDoAdapter;
 
@@ -36,9 +33,10 @@ public class MainActivity extends AppCompatActivity
         mToDoList.setHasFixedSize(false);
 
         ToDoDbHelper helper = new ToDoDbHelper(this);
-        mDb = helper.getReadableDatabase();
+        mReadableDb = helper.getReadableDatabase();
+        mWritableDb = helper.getWritableDatabase();
 
-        mToDoAdapter = new ToDoAdapter(this, getAllToDos());
+        mToDoAdapter = new ToDoAdapter(this,this, getAllToDos());
         mToDoList.setAdapter(mToDoAdapter);
 
         FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.fab_insert_todo_main);
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     }*/
 
     private Cursor getAllToDos() {
-        return mDb.query(
+        return mReadableDb.query(
                 ToDoContract.ToDoEntry.TABLE_NAME,
                 null,
                 null,
@@ -82,6 +80,8 @@ public class MainActivity extends AppCompatActivity
         );
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListItemClick(int clickedItemId) {
-        Cursor cursor = mDb.query(ToDoContract.ToDoEntry.TABLE_NAME, null, null, null, null,null,null);
+        Cursor cursor = mReadableDb.query(ToDoContract.ToDoEntry.TABLE_NAME, null, null, null, null,null,null);
         if(cursor.getCount() >= clickedItemId)
             cursor.moveToPosition(clickedItemId);
         else
@@ -107,5 +107,20 @@ public class MainActivity extends AppCompatActivity
         detailIntent.putExtra(ToDoContract.ToDoEntry.COLUMN_PLACE, place);
         detailIntent.putExtra(ToDoContract.ToDoEntry._ID, id);
         startActivity(detailIntent);
+    }
+
+    @Override
+    public void onCheckBoxItemClick(long clickedItemId, boolean isChecked) {
+        String id = Long.toString(clickedItemId);
+        ContentValues cv = new ContentValues();
+        int status;
+        if(isChecked)
+            status = 1;
+        else
+            status = 0;
+        cv.put(ToDoContract.ToDoEntry.COLUMN_STATUS, Integer.toString(status));
+        int res = mWritableDb.update(ToDoContract.ToDoEntry.TABLE_NAME, cv, ToDoContract.ToDoEntry._ID + " = ?", new String[]{id});
+        /*if(res > 0)
+            Toast.makeText(this, "updated " + clickedItemId, Toast.LENGTH_LONG).show();*/
     }
 }

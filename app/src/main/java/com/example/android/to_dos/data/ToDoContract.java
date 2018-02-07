@@ -13,5 +13,6 @@ public class ToDoContract {
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_EXPLANATION = "explanation";
         public static final String COLUMN_PLACE = "place";
+        public static final String COLUMN_STATUS = "status";
     }
 }

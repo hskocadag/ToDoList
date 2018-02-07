@@ -36,17 +36,17 @@ public class AddToDoActivity extends AppCompatActivity {
                 String explanation = mExplanation.getText().toString();
                 String dateTime = mDateTime.getText().toString();
                 String place = mPlace.getText().toString();
-                addToDoToDatabase(title, explanation, dateTime, place);
+                handleClick(title, explanation, dateTime, place);
             }
         });
     }
 
     private void handleClick(String title, String explanation, String dateTime, String place) {
-        if (!title.isEmpty()) {
-            addToDoToDatabase(title, explanation, dateTime, place);
+        if (title == null || title.trim().isEmpty()) {
+            Toast.makeText(this, "Title can not be empty", Toast.LENGTH_LONG).show();
         }
         else {
-            Toast.makeText(this, "Title can not be empty", Toast.LENGTH_LONG).show();
+            addToDoToDatabase(title, explanation, dateTime, place);
         }
     }
 
@@ -59,6 +59,7 @@ public class AddToDoActivity extends AppCompatActivity {
         cv.put(ToDoContract.ToDoEntry.COLUMN_DATE_TIME, dateTime);
         cv.put(ToDoContract.ToDoEntry.COLUMN_EXPLANATION, explanation);
         cv.put(ToDoContract.ToDoEntry.COLUMN_PLACE, place);
+        cv.put(ToDoContract.ToDoEntry.COLUMN_STATUS, 0);
         database.insert(ToDoContract.ToDoEntry.TABLE_NAME, null, cv);
         database.close();
         finish();

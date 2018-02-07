@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ToDoDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "todo.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public ToDoDbHelper(Context context)
     {
@@ -25,7 +25,8 @@ public class ToDoDbHelper extends SQLiteOpenHelper {
                 ToDoContract.ToDoEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 ToDoContract.ToDoEntry.COLUMN_EXPLANATION + " TEXT, " +
                 ToDoContract.ToDoEntry.COLUMN_DATE_TIME + " TEXT NOT NULL, " +
-                ToDoContract.ToDoEntry.COLUMN_PLACE + " TEXT );" ;
+                ToDoContract.ToDoEntry.COLUMN_PLACE + " TEXT, " +
+                ToDoContract.ToDoEntry.COLUMN_STATUS + " INTEGER );" ;
         sqLiteDatabase.execSQL(CREATE_QUERY);
     }
 
